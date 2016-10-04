@@ -5,6 +5,9 @@ import os
 import json
 from flask import Flask, render_template, request, jsonify
 import requests
+from janome.tokenizer import Tokenizer
+t = Tokenizer()
+
 
 app = Flask(__name__)
 app.debug = True
@@ -42,7 +45,13 @@ def endpoint():
             if r['message']['type'] == 'text':
                 print(r['replyToken'])
                 print(r['message']['text'])
-                reply_message(r['replyToken'], r['message']['text'])
+                text = r['message']['text']
+                tks = t.tokenize(text)
+                text = ""
+                for tk in tks:
+                    text += "{} {} {}\n".format(tk.surface, tk.reading, tk.part_of_speech)
+                text = text[:-1]
+                reply_message(r['replyToken'], text)
     return jsonify(res='ok')
 
 if __name__ == '__main__':
