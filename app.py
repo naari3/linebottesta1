@@ -9,7 +9,7 @@ import requests
 app = Flask(__name__)
 app.debug = True
 
-channel_access_token = "z44NtlIhV1E3LqFTpxPZZx/v1qOxvwiLNEeyVL43FNs/AoyRrp750avQU+Uals4M+g+TPNDJ4vo3IOqmigRVGjynkX9R5OzXAvOFItZRy10HhrmDPSTXvcf17DVNNcvG6VnI6sFC9P1XXguiaQygnQdB04t89/1O/w1cDnyilFU="
+channel_access_token = os.environ['Channel_Access_Token']
 
 def reply_message(replyToken, text):
     req_header = {
