@@ -14,7 +14,7 @@ def index():
 
 @app.route('/endpoint', methods=['POST'])
 def endpoint():
-    reqs = request.json['event']
+    reqs = request.json['events']
     for r in reqs:
         if r['type'] == 'message':
             if r['message']['type'] == 'text':
