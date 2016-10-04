@@ -14,7 +14,11 @@ def index():
 
 @app.route('/endpoint', methods=['POST'])
 def endpoint():
-    print(request.json)
+    reqs = request.json['event']
+    for r in reqs:
+        if r['type'] == 'message':
+            if r['message']['type'] == 'text':
+                print(r['message']['text'])
     return jsonify(res='ok')
 
 if __name__ == '__main__':
