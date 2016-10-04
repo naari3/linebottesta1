@@ -32,7 +32,7 @@ def reply_message(replyToken, text):
 
 @app.route('/')
 def index():
-    return u'テスト'
+    return u'test'
 
 @app.route('/endpoint', methods=['POST'])
 def endpoint():
