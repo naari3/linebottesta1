@@ -2,11 +2,33 @@
 # coding: utf-8
 
 import os
+import json
 from flask import Flask, render_template, request, jsonify
+import requests
 
 app = Flask(__name__)
 app.debug = True
 
+channel_access_token = "z44NtlIhV1E3LqFTpxPZZx/v1qOxvwiLNEeyVL43FNs/AoyRrp750avQU+Uals4M+g+TPNDJ4vo3IOqmigRVGjynkX9R5OzXAvOFItZRy10HhrmDPSTXvcf17DVNNcvG6VnI6sFC9P1XXguiaQygnQdB04t89/1O/w1cDnyilFU="
+
+def reply_message(replyToken, text):
+    req_header = {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer {}'.format(channel_access_token)
+    }
+
+    text_object = {
+        'type': "text",
+        'text': text
+    }
+    req_body = {
+        'replyToken': replyToken,
+        'messages': [
+            text_object
+        ]
+    }
+
+    requests.post("https://api.line.me/v2/bot/message/reply", data=json.dumps(req_body), headers=req_header)
 
 @app.route('/')
 def index():
@@ -18,7 +40,9 @@ def endpoint():
     for r in reqs:
         if r['type'] == 'message':
             if r['message']['type'] == 'text':
+                print(r['replyToken'])
                 print(r['message']['text'])
+                reply_message(r['replyToken'], r['message']['text'])
     return jsonify(res='ok')
 
 if __name__ == '__main__':
