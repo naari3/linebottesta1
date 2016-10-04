@@ -27,8 +27,8 @@ def reply_message(replyToken, text):
             text_object
         ]
     }
-
-    requests.post("https://api.line.me/v2/bot/message/reply", data=json.dumps(req_body), headers=req_header)
+    r = requests.post("https://api.line.me/v2/bot/message/reply", data=json.dumps(req_body), headers=req_header)
+    print(r.text)
 
 @app.route('/')
 def index():
