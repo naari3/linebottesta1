@@ -52,7 +52,7 @@ def endpoint():
                     text += "{} {} {}\n".format(tk.surface, tk.reading, tk.part_of_speech)
                 text = text[:-1]
                 reply_message(r['replyToken'], text)
-    return jsonify(res='ok')
+    return jsonify(res='')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
