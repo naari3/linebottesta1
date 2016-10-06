@@ -45,10 +45,12 @@ def endpoint():
                 print(r['replyToken'])
                 print(r['message']['text'])
                 text = r['message']['text']
+                print("make instance")
                 t = Tokenizer()
+                print("tokenize")
                 tks = t.tokenize(text)
+                print("build sentences")
                 for tk in tks:
-                    print(tk.surface)
                     text += "{} {} {}\n".format(tk.surface, tk.reading, tk.part_of_speech)
                 text = text[:-1]
                 print(text)
