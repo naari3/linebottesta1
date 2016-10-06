@@ -51,6 +51,7 @@ def endpoint():
                 for tk in tks:
                     text += "{} {} {}\n".format(tk.surface, tk.reading, tk.part_of_speech)
                 text = text[:-1]
+                print(text)
                 reply_message(r['replyToken'], text)
     return jsonify(res='')
 
