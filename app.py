@@ -6,7 +6,6 @@ import json
 from flask import Flask, render_template, request, jsonify
 import requests
 from janome.tokenizer import Tokenizer
-t = Tokenizer()
 
 
 app = Flask(__name__)
@@ -46,6 +45,7 @@ def endpoint():
                 print(r['replyToken'])
                 print(r['message']['text'])
                 text = r['message']['text']
+                t = Tokenizer()
                 tks = t.tokenize(text)
                 text = ""
                 for tk in tks:
