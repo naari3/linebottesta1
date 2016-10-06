@@ -47,8 +47,8 @@ def endpoint():
                 text = r['message']['text']
                 t = Tokenizer()
                 tks = t.tokenize(text)
-                text = ""
                 for tk in tks:
+                    print(tk.surface)
                     text += "{} {} {}\n".format(tk.surface, tk.reading, tk.part_of_speech)
                 text = text[:-1]
                 print(text)
