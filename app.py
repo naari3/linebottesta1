@@ -5,7 +5,9 @@ import os
 import json
 from flask import Flask, render_template, request, jsonify
 import requests
-from janome.tokenizer import Tokenizer
+
+from collections import OrderedDict
+from operator import itemgetter
 
 
 app = Flask(__name__)
@@ -32,6 +34,26 @@ def reply_message(replyToken, text):
     r = requests.post("https://api.line.me/v2/bot/message/reply", data=json.dumps(req_body), headers=req_header)
     print(r.text)
 
+def get_char_width(c):
+    data = unicodedata.east_asian_width(c)
+    if data == 'Na' or data == 'H':
+        return 1
+    return 2
+
+def most_texts(text):
+    dic = {}
+    for t in text:
+        dic[t] = dic.get(t, 0) + 1
+    dic = OrderedDict(sorted(dic.items(), key=itemgetter(1), reverse=True))
+
+    for_send_text = ""
+    for k,v in dic.items():
+        if get_char_width(k) == 1:
+            k += " "
+        for_send_text += "{0}: {1}\n".format(k, v)
+    for_send_text = for_send_text[:-1] # 最後の改行を削除
+    return for_send_text
+
 @app.route('/')
 def index():
     return u'test'
@@ -45,16 +67,8 @@ def endpoint():
                 print(r['replyToken'])
                 print(r['message']['text'])
                 text = r['message']['text']
-                print("make instance")
-                t = Tokenizer()
-                print("tokenize")
-                tks = t.tokenize(text)
-                print("build sentences")
-                for tk in tks:
-                    text += "{} {} {}\n".format(tk.surface, tk.reading, tk.part_of_speech)
-                text = text[:-1]
                 print(text)
-                reply_message(r['replyToken'], text)
+                reply_message(r['replyToken'], most_texts(text))
     return jsonify(res='')
 
 if __name__ == '__main__':
